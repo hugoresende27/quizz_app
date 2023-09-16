@@ -5,3 +5,65 @@
 [x-cloak] {
     display: none;
 }
+
+
+
+.quiz-container {
+    background-color: bisque;
+    font-size: xx-large;
+    text-align: center;
+    /* max-width: 600px; */
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 20px;
+  }
+
+  .quizz-question{
+      font-size: 28pt;
+      font-weight: bolder;
+      background-color: #fff;
+      padding: 40px;
+      color: black;
+      border-radius: 10px;
+      line-height:1.5;
+  }
+
+  .options {
+      color: black;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+
+  }
+
+  .options div {
+    padding: 10px;
+    cursor: pointer;
+    padding: 20px;
+  }
+
+  .options div:hover{
+      /* background: #fff; */
+      border-radius: 50px;
+      color: black;
+      transform: scale(1.5);
+  }
+
+  .options div.selected {
+    background-color: #35780b;
+    color: white;
+    padding: 20px;
+    border-radius: 50px;
+  }
+
+  button {
+    margin-top: 20px;
+    background-color: #3490dc;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    padding: 20px;
+    border-radius: 50px;
+    min-width: 400px;
+  }
