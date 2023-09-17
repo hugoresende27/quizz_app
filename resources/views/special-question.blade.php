@@ -29,7 +29,7 @@
             <h1 class="text-white" style="font-size:42pt">Do you want to be my girlfriend ???</h1>
             <a href="/">
                 <button class="btn btn-success">YES</button>
-                <button class="btn btn-danger">NO</button>
+                <button class="btn btn-warning">YES</button>
             </a>
         </div>
     </div>
