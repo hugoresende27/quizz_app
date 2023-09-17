@@ -27,6 +27,11 @@ Route::get('/', function () {
 
 Route::get('/dev', [QuizzController::class, 'index']);
 
+Route::get('/special-question', function () {
+    return view('special-question'); // Create this Blade view
+
+});
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),

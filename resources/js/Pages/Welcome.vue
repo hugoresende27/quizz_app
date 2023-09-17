@@ -1,6 +1,8 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
+// import { ref } from 'vue'
 
+// const msg = ref('Hello World!')
 defineProps({
     canLogin: Boolean,
     canRegister: Boolean,
@@ -32,6 +34,7 @@ defineProps({
                 <div class="ml-4 text-center text-sm text-gray-500 dark:text-gray-400 sm:text-right sm:ml-0">
 
                     <div class="quiz-container" v-if="questionsLoaded">
+
                         <h2 class="quizz-question">{{ currentQuestion.question.text }}</h2>
                         <div class="options">
                         <div
@@ -43,7 +46,11 @@ defineProps({
                             {{ option }}
                         </div>
                         </div>
+                        <a href="/special-question">
+                            <button>Special Question</button>
+                        </a>
                         <button @click="nextQuestion" v-if="currentIndex < questions.length - 1">Next</button>
+
                         <div v-else>
                         <hr><br><br>
                         <h3>Quiz Completed!</h3>
@@ -61,6 +68,7 @@ defineProps({
 
         </div>
     </div>
+
 </template>
 
 <style>
@@ -71,6 +79,7 @@ defineProps({
 <script>
 export default {
   data() {
+
 
     return {
       questions: [],
@@ -86,6 +95,12 @@ export default {
     },
   },
   methods: {
+    specialQuestion() {
+    const specialQuestionText = "Claudia Piek do you want to be my girlfriend? Ass.Hugo Resende :)";
+    console.log('Special Question Clicked');
+    this.$router.push({ name: 'SpecialQuestion' });
+    alert(specialQuestionText);
+  },
     selectOption(index) {
       this.selectedOption = index;
     },
