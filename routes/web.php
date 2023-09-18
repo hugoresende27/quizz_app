@@ -25,7 +25,7 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dev', [QuizzController::class, 'index']);
+Route::get('/questions', [QuizzController::class, 'index']);
 
 Route::get('/special-question', function () {
     return view('special-question'); // Create this Blade view

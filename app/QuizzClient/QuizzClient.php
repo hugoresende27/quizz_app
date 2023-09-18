@@ -14,6 +14,8 @@ class QuizzClient
         $response = $this->callAPI($url);
         return $response;
     }
+
+    
     public function callAPI(string $url, string $method = 'GET')
     {
         $curl = curl_init();

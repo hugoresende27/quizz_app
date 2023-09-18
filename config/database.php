@@ -42,6 +42,11 @@ return [
             'prefix' => '',
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
         ],
+        'mongodb' => [
+            'driver' => 'mongodb',
+            'dsn' => env('DB_URI', 'mongodb://'.env('MONGODB_USER').':'.env('MONGODB_PASS').'@'.env('MONGODB_HOST').':'.env('MONGODB_PORT')),
+            'database' => env('MONGODB_NAME'),
+        ],
 
         'mysql' => [
             'driver' => 'mysql',

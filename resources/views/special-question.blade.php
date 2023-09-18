@@ -28,8 +28,8 @@
         <div class="max-w-7xl mx-auto p-6 lg:p-8">
             <h1 class="text-white" style="font-size:42pt">Do you want to be my girlfriend ???</h1>
             <a href="/">
-                <button class="btn btn-success">YES</button>
-                <button class="btn btn-warning">YES</button>
+                <button class="btn btn-success p-3 m-1" style="font-size:44pt">YES</button>
+                <button class="btn btn-warning p-3 m-1" style="font-size:44pt">YES</button>
             </a>
         </div>
     </div>
