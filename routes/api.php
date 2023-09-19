@@ -20,3 +20,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/questions', [QuizzController::class, 'index']);
+Route::get('/questions/all', [QuizzController::class, 'getAllQuestions']);
+Route::get('/questions/category/{category}', [QuizzController::class, 'getQuestionsByCategory']);
+Route::get('/questions/tag/{tag}', [QuizzController::class, 'getQuestionsByTag']);
+Route::get('/questions/filter', [QuizzController::class, 'getFilteredQuestions']);
+

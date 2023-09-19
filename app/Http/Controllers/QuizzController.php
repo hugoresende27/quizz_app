@@ -4,45 +4,70 @@ namespace App\Http\Controllers;
 
 use App\Models\Question;
 use App\QuizzClient\QuizzClient;
+use App\Repositories\QuizzRepository;
 use DB;
 use Illuminate\Http\Request;
 
 class QuizzController extends Controller
 {
+    protected QuizzRepository $quizzRepository;
+
+    public function __construct(QuizzRepository $quizzRepository)
+    {
+        $this->quizzRepository = $quizzRepository;
+    }
 
 
-    public function index()
+    public function index(): array
     {
         $quizzClient = new QuizzClient();
 
         $questions = $quizzClient->getRandomQuestions();
 
         foreach ($questions as $questionData) {
-            $id = $questionData->id;
-
-            // Check if a question with the same ID already exists
-            $existingQuestion = Question::find($id);
-
-            if (!$existingQuestion) {
-                // Create a new Question instance based on the data
-                $questionToSave = new Question([
-                    '_id' => $questionData->id,
-                    'category' => $questionData->category,
-                    'correctAnswer' => $questionData->correctAnswer,
-                    'incorrectAnswers' => $questionData->incorrectAnswers,
-                    'question' => $questionData->question,
-                    'tags' => $questionData->tags,
-                    'type' => $questionData->type,
-                    'difficulty' => $questionData->difficulty,
-                    'regions' => $questionData->regions,
-                    'isNiche' => $questionData->isNiche,
-                ]);
-
-                $questionToSave->save();
-            }
+            $this->quizzRepository->addNewQuestion($questionData);
         }
 
-        return $questions;
+        return ['total' => count($questions), 'data' => $questions];
+    }
+
+    public function getAllQuestions(): array
+    {
+        $questions = $this->quizzRepository->getAllQuestions();
+        return ['total' => count($questions), 'data' => $questions];
+    }
+
+    public function getQuestionsByCategory(Request $request): array
+    {
+        $questions = $this->quizzRepository->getQuestionsByCategory($request->category);
+        return ['total' => count($questions), 'data' => $questions];
+    }
+
+    public function getQuestionsByTag(Request $request)
+    {
+        $questions = $this->quizzRepository->getQuestionsByTag($request->tag);
+        return ['total' => count($questions),'data' => $questions];
+    }
+
+
+    public function getFilteredQuestions(Request $request)
+    {
+        $category = $request->query('category');
+        $tag = $request->query('tag');
+
+        if ($category && $tag) {
+            $questionsCategory = $this->quizzRepository->getQuestionsByCategory($category);
+            $questionsTag = $this->quizzRepository->getQuestionsByTag($tag);
+            $questions = $questionsCategory->merge($questionsTag);
+        } elseif ($category) {
+            $questions = $this->quizzRepository->getQuestionsByCategory($category);
+        } elseif ($tag) {
+            $questions = $this->quizzRepository->getQuestionsByTag($tag);
+        } else {
+            $questions = [];
+        }
+
+        return ['total' => count($questions), 'data' => $questions];
     }
 
 

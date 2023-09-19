@@ -16,60 +16,76 @@ defineProps({
 <template>
     <Head title="" />
 
-    <div class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
-        <div v-if="canLogin" class="sm:fixed sm:top-0 sm:right-0 p-6 text-right z-10">
-            <Link v-if="$page.props.auth.user" :href="route('dashboard')" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Dashboard</Link>
+    <div
+      class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white"
+    >
+      <div v-if="canLogin" class="sm:fixed sm:top-0 sm:right-0 p-6 text-right z-10">
+        <Link
+          v-if="$page.props.auth.user"
+          :href="route('dashboard')"
+          class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
+        >
+          Dashboard
+        </Link>
 
-            <template v-else>
-                <Link :href="route('login')" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Log in</Link>
+        <template v-else>
+          <Link
+            :href="route('login')"
+            class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
+          >
+            Log in
+          </Link>
 
-                <Link v-if="canRegister" :href="route('register')" class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Register</Link>
-            </template>
+          <Link
+            v-if="canRegister"
+            :href="route('register')"
+            class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
+          >
+            Register
+          </Link>
+        </template>
+      </div>
+
+      <div class="max-w-7xl mx-auto p-6 lg:p-8">
+        <div class="ml-4 text-center text-sm text-gray-500 dark:text-gray-400 sm:text-right sm:ml-0">
+          <div class="quiz-container" v-if="questionsLoaded">
+            <h2 class="quizz-question">{{ currentQuestion.question }}</h2>
+            <div class="options">
+              <div
+                v-for="(option, index) in currentQuestion.options"
+                :key="index"
+                @click="selectOption(index)"
+                :class="{ selected: selectedOption === index }"
+              >
+                {{ option }}
+              </div>
+            </div>
+            <a href="/special-question">
+              <button>Special Question</button>
+            </a>
+            <button @click="nextQuestion" v-if="currentIndex < questions.length - 1">
+              Next
+            </button>
+            <div v-else>
+              <hr />
+              <br />
+              <br />
+              <h3>Quiz Completed!</h3>
+              <br />
+              <br />
+              <hr />
+              <br />
+              <br />
+              <p>You got {{ score }} out of {{ questions.length }} questions correct.</p>
+            </div>
+          </div>
+          <div v-else>
+            <p>Loading questions...</p>
+          </div>
         </div>
-
-        <div class="max-w-7xl mx-auto p-6 lg:p-8">
-
-
-
-                <div class="ml-4 text-center text-sm text-gray-500 dark:text-gray-400 sm:text-right sm:ml-0">
-
-                    <div class="quiz-container" v-if="questionsLoaded">
-
-                        <h2 class="quizz-question">{{ currentQuestion.question.text }}</h2>
-                        <div class="options">
-                        <div
-                            v-for="(option, index) in currentQuestion.options"
-                            :key="index"
-                            @click="selectOption(index)"
-                            :class="{ selected: selectedOption === index }"
-                        >
-                            {{ option }}
-                        </div>
-                        </div>
-                        <a href="/special-question">
-                            <button>Special Question</button>
-                        </a>
-                        <button @click="nextQuestion" v-if="currentIndex < questions.length - 1">Next</button>
-
-                        <div v-else>
-                        <hr><br><br>
-                        <h3>Quiz Completed!</h3>
-                        <br><br><hr><br><br>
-                        <p>You got {{ score }} out of {{ questions.length }} questions correct.</p>
-                        </div>
-                    </div>
-                    <div v-else>
-                        <p>Loading questions...</p>
-                    </div>
-
-
-                    <!--  Laravel v{{ laravelVersion }} (PHP v{{ phpVersion }}) -->
-                </div>
-
-        </div>
+      </div>
     </div>
-
-</template>
+  </template>
 
 <style>
 
@@ -116,12 +132,13 @@ export default {
         const response = await fetch('http://127.0.0.1:8000/api/questions');
 
         if (response.status == 200) {
-          const data = await response.json();
+          const responseData = await response.json();
+          const data = responseData.data; // Access the 'data' property
           console.log(data);
           this.questions = data.map((item) => ({
-            question: item.question, // Adjust property names accordingly
-            options: item.incorrectAnswers,   // Adjust property names accordingly
-            correctAnswer: item.correctAnswer, // Adjust property names accordingly
+            question: item.question.text, // Access the 'text' property
+            options: item.question.options, // Access the 'options' property
+            correctAnswer: item.correctAnswer,
           }));
           this.questionsLoaded = true;
           console.log(this.questions);
